@@ -1,27 +1,27 @@
 pub struct Tree<T> {
-    item: T,
+    pub item: T,
     pub freq: i64,
     //children: Vec<Option<Tree<T>>>,
-    left: Box<Option<Tree<T>>>,
-    right: Box<Option<Tree<T>>>,
+    pub left: Option<Box<Tree<T>>>,
+    pub right: Option<Box<Tree<T>>>,
 }
 impl<T> Tree<T> {
     pub fn new(item: T, freq: i64) -> Tree<T> {
         Tree::<T> {
             item,
             freq,
-            left: Box::new(None),
-            right: Box::new(None),
+            left: None,
+            right: None,
         }
     }
     pub fn is_leaf(&self) -> bool {
         self.left.is_none() && self.right.is_none()
     }
     pub fn add_left(&mut self, child: Tree<T>) {
-        self.left = Box::new(Some(child));
+        self.left = Some(Box::new(child));
     }
     pub fn add_right(&mut self, child: Tree<T>) {
-        self.right = Box::new(Some(child));
+        self.right = Some(Box::new(child));
     }
 }
 
