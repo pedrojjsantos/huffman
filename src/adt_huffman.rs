@@ -1,13 +1,13 @@
-pub struct Tree<T> {
-    pub item: T,
-    pub freq: i64,
+pub struct Tree {
+    pub item: u8,
+    pub freq: u64,
     //children: Vec<Option<Tree<T>>>,
-    pub left: Option<Box<Tree<T>>>,
-    pub right: Option<Box<Tree<T>>>,
+    pub left: Option<Box<Tree>>,
+    pub right: Option<Box<Tree>>,
 }
-impl<T> Tree<T> {
-    pub fn new(item: T, freq: i64) -> Tree<T> {
-        Tree::<T> {
+impl Tree {
+    pub fn new(item: u8, freq: u64) -> Tree {
+        Tree {
             item,
             freq,
             left: None,
@@ -17,16 +17,16 @@ impl<T> Tree<T> {
     pub fn is_leaf(&self) -> bool {
         self.left.is_none() && self.right.is_none()
     }
-    pub fn add_left(&mut self, child: Tree<T>) {
+    pub fn add_left(&mut self, child: Tree) {
         self.left = Some(Box::new(child));
     }
-    pub fn add_right(&mut self, child: Tree<T>) {
+    pub fn add_right(&mut self, child: Tree) {
         self.right = Some(Box::new(child));
     }
 }
 
 pub struct Heap {
-    pub data: Vec<Tree<u8>>,
+    data: Vec<Tree>,
 }
 impl Heap {
     pub fn new() -> Heap {
@@ -34,7 +34,10 @@ impl Heap {
             data: vec!(),
         }
     }
-    pub fn enqueue(&mut self, item: Tree<u8>) {
+    pub fn len(&self) -> usize {
+        self.data.len()
+    }
+    pub fn enqueue(&mut self, item: Tree) {
         if self.data.len() == 0 {
             self.data.push(item);
             return;
@@ -57,7 +60,7 @@ impl Heap {
             self.data.swap(i, p);
         }
     }
-    pub fn dequeue(&mut self) -> Result<Tree<u8>, &'static str> {
+    pub fn dequeue(&mut self) -> Result<Tree, &'static str> {
         if self.data.len() == 0 {
             return Err("Trying to dequeue an empty heap");
         }
