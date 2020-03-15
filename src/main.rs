@@ -1,5 +1,5 @@
 mod zip;
-//mod unzip;
+mod unzip;
 
 use std::fs;
 
@@ -14,7 +14,7 @@ fn main() -> std::io::Result<()> {
             
             match &option[..] {
                 "-c" => zip::compress(file)?,
-                "-d" => println!("decompressing"),// unzip::decompress(file),
+                "-d" => unzip::decompress(file)?,
                 e => print!("'{}' is not a valid option:\n  '-c' to compress\n  '-d' to decompress\n", e),
             }
         }
