@@ -24,10 +24,11 @@ impl Tree {
         self.right = Some(Box::new(child));
     }
 }
-
+#[allow(dead_code)]
 pub struct Heap {
     data: Vec<Tree>,
 }
+#[allow(dead_code)]
 impl Heap {
     pub fn new() -> Heap {
         Heap {
