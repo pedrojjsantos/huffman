@@ -1,7 +1,6 @@
 pub struct Tree {
     pub item: u8,
     pub freq: u64,
-    //children: Vec<Option<Tree<T>>>,
     pub left: Option<Box<Tree>>,
     pub right: Option<Box<Tree>>,
 }
@@ -24,6 +23,7 @@ impl Tree {
         self.right = Some(Box::new(child));
     }
 }
+
 #[allow(dead_code)]
 pub struct Heap {
     data: Vec<Tree>,

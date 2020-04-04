@@ -25,9 +25,6 @@ fn get_header(file: &mut fs::File) -> std::io::Result<(u8, Vec<u8>)> {
     let mut tree_size = (tree_size as usize) << 5;
 
     tree_size |= header[1] as usize;
-    // println!("header:   {:>0digits$b} {:>0digits$b}", header[0], header[1], digits=8);
-    // println!("treesize: {:17b}", tree_size);
-    // println!("trash:    {:17b}", trash);
     let mut preorder: Vec<u8> = vec![0;tree_size];
 
     file.read_exact(&mut preorder)?;
@@ -69,16 +66,13 @@ fn write_file(old: &fs::File, new: &mut fs::File, huff_tree: &Tree, trash: i8) -
     let mut tree = huff_tree;
 
     for i in file {
-        // println!("-{:>0d$b}-", i, d=8);
         for j in (0..8).rev() {
             match is_set(j, i) {
                 false  => {
-                    // print!("0");
                     let left = tree.left.as_ref();
                     tree = left.unwrap();
                 }
                 true => {
-                    // print!("1");
                     let right = tree.right.as_ref();
                     tree = right.unwrap();
                 }
@@ -86,22 +80,18 @@ fn write_file(old: &fs::File, new: &mut fs::File, huff_tree: &Tree, trash: i8) -
 
             if tree.is_leaf() {
                 byte[0] = tree.item;
-                // println!(": {}", byte[0] as char);
                 new.write(&byte)?;
                 tree = huff_tree;
             }
         }
     }
-    // println!("-{:>0d$b}-", last_byte, d=8);
     for j in (trash..8).rev() {
         match is_set(j, last_byte) {
             false  => {
-                // print!("0");
                 let left = tree.left.as_ref();
                 tree = left.unwrap();
             }
             true => {
-                // print!("1");
                 let right = tree.right.as_ref();
                 tree = right.unwrap();
             }
@@ -109,7 +99,6 @@ fn write_file(old: &fs::File, new: &mut fs::File, huff_tree: &Tree, trash: i8) -
 
         if tree.is_leaf() {
             byte[0] = tree.item;
-            // println!(": {}", byte[0] as char);
             new.write(&byte)?;
             tree = huff_tree;
         }
